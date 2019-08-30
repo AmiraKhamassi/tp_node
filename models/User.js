@@ -17,7 +17,10 @@ const userSchema = new Schema({
     modifiedAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    passwordResetToken: String,
+    passwordResetExpires: Date
+
 }, {collection: 'users'})
 
 const User = mongoose.model('User', userSchema)

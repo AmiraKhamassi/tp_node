@@ -30,16 +30,45 @@ db.on('error', console.error.bind(console, 'ERREUR MONGODB:'))
 db.once('open', () => console.log('MONGODB EST CONNECTE'))
 
 const User = require('./models/User')
+const Token = require('./models/Token')
 
 app.get('/', (req,res) => { res.render('signup.pug') })
 
 // Partie INSCRIPTION
 app.post('/user', formParser, (req,res) => {
+    // verifier mail pas deja pris
     // persister users
+    const {email, password} = req.body
+    const newUser = new User({ email, password })
+    User.findOne({email}, (err, user) => {
+        if (err) {
+            return res.status(500).send(err)
+        }
+        if (user) {
+            return res.status(500).send(`Le mail ${email} est déjà utilisé`)
+        }
+        newUser.save((err, user) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).send('Erreur du serveur. post/user')
+            }
+            //res.status(210).send(`Utilisateur ${user._id} enregstré`)
+            const userToken = new Token({
+                _userId: user._id,
+                token: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+            })
+            userToken.save((err, token) => {
+                if (err) {
+                    console.log(err)
+                    return res.status(500).send('Erreur du serveur. post/token')
+                }
+                res.status(210).send(`Token ${token._id} enregstré`)
+            })
+        })
+    })
     // envoyer mail avec lien localhost/user/:_id
     // put isVerified = true
     // render pageVerifierMail
-    res.send(`Hello ${req.body.username}`)
 })
 
 app.put('/user/:_id', (req, res) => {
