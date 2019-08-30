@@ -9,7 +9,7 @@ const tokenSchema = new Schema({
         type: String, required: true
     },
     createdAt: {
-        type: Date, required: true, default: Date.now, expires: '86400'
+        type: Date, required: true, default: Date.now, expireAfterSeconds : 3600
     }
 }, {collection: 'tokens'})
 

@@ -1,0 +1,12 @@
+doctype html
+html
+    head
+        title Page Admin
+        meta(charset="utf-8")
+    body
+        h1 Page Admin
+        p Liste des Utilisateurs
+        ul
+            each user in users
+                li= `Email : ${user.email}, Username: ${user.username}`
+        a(href="/logout") Log out

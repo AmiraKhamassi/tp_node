@@ -1,0 +1,17 @@
+doctype html
+html
+    head
+        title LogIn Admin
+        meta(charset="utf-8")
+    body
+        h1 LogIn Admin
+        form(action="/handleAdmin", method="post")
+            label(for="username") Username
+            input(type='text', name="username", required)
+            br
+            br
+            label(for="password") Password
+            input(type="password", name="password", required)
+            br
+            br
+            input(type="submit", value="Connexion Admin")
